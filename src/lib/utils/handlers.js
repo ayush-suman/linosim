@@ -2,8 +2,10 @@ let lastOffset;
 let offset;
 let downAtPoint;
 let isDown = false;
+let moved = false;
 
 let onDragListener;
+let onClickListener;
 let onZoonListener;
 
 const onMouseDown = function(event) {
@@ -16,6 +18,7 @@ const onMouseDown = function(event) {
         lastOffset = {x: 0, y: 0};
     }
     console.log(downAtPoint);
+    moved = false;
 }
 
 const onMouseMove = function(event) {
@@ -27,6 +30,7 @@ const onMouseMove = function(event) {
         console.log(event.clientY - downAtPoint.y);
         offset = {x: event.clientX - downAtPoint.x, y: event.clientY - downAtPoint.y};
         onDragListener(lastOffset.x + offset.x, lastOffset.y + offset.y);
+        moved = true;
     }
 }
 
@@ -39,11 +43,19 @@ const onMouseUp = function(event) {
         lastOffset = {x: offset.x + lastOffset.x, y: offset.y + lastOffset.y};
     }
     downAtPoint = undefined;
+    if (!moved) {
+        onClickListener(event.clientX, event.clientY);
+        moved = false;
+    }
 }
 
 function setOnDragListener(onDrag) {
     onDragListener = onDrag;
 };
+
+function setOnClickListener(onClick) {
+    onClickListener = onClick;
+}
 
 
 const onScroll = function(event) {
@@ -62,6 +74,7 @@ export default {
     onMouseMove,
     onMouseUp,
     setOnDragListener,
+    setOnClickListener,
     onScroll,
-    setOnZoomListener
+    setOnZoomListener,
 };

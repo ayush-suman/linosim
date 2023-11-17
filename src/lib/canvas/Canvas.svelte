@@ -3,17 +3,18 @@
     import {Renderer} from './renderer';
     import handlers from '../utils/handlers';
 
-    let canvas; 
-    let renderer;
-    
-    export let width, height;
     export let points;
 
+    let canvas; 
+    let renderer;
+    let width, height;
+
     onMount(() => {
-        var gl = canvas.getContext("2d");
+        const gl = canvas.getContext("2d");
         renderer = new Renderer(gl);
         renderer.resize(width, height);
         handlers.setOnDragListener((x, y) => renderer.translate(x, y));
+        handlers.setOnClickListener((x, y) => renderer.markWithCross(x, y));
         handlers.setOnZoomListener((s, x, y) => renderer.scale(s, x, y)); 
     });
 
@@ -21,6 +22,12 @@
         if (renderer && width && height) { 
             console.log("Resizing renderer " + renderer + " to width " + width + " and height " + height);
             renderer.resize(width, height);
+        }
+    }
+
+    function onKeyDown(event) {
+        if (event.code == 'Escape') { 
+            renderer.clearMark(); 
         }
     }
 
@@ -35,6 +42,8 @@
 
 
 </script>
+
+<svelte:window bind:innerHeight={height} bind:innerWidth={width} on:keydown={onKeyDown}/>
 
 <canvas bind:this={canvas} {width} {height} 
     on:mousedown={handlers.onMouseDown} 

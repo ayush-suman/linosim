@@ -16,11 +16,9 @@
   });
 </script>
 
-<svelte:window bind:innerHeight={height} bind:innerWidth={width}/>
-
 <main>
   <p id='welcome'>Welcome to Linosim</p>
-  <Canvas {width} {height} {points}/>
+  <Canvas {points}/>
 </main>
 
 <style>
