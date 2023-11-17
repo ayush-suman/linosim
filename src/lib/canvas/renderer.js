@@ -75,4 +75,9 @@ export class Renderer {
         this.#x = x;
         this.#y = y;
     }
+
+    scale(s, x, y) {
+        this.#ctx.scale(s, s);
+        this.#ctx.translate((s - 1) * (x - this.#width / 2), (s - 1) * (y - this.#height / 2));
+    }
 }

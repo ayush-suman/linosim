@@ -1,4 +1,5 @@
 import ROSLIB from "roslib";
+import { Topics, MessageTypes } from "../../constants";
 
 export class RosConnection {
     constructor (ros) {
@@ -10,9 +11,13 @@ export class RosConnection {
     getTopic(name, type) {
         return new ROSLIB.Topic({
             ros : this.#ros,
-            name : name, //'/scan',
-            messageType : type //'sensor_msgs/msg/LaserScan'
+            name : name,
+            messageType : type
         });
+    }
+
+    getScanTopic() {
+        return this.getTopic(Topics.SCAN, MessageTypes.LASER_SCAN);
     }
 }
 

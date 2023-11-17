@@ -35,7 +35,9 @@ const onMouseUp = function(event) {
     event.stopPropagation();
     console.log(event);
     isDown = false;
-    lastOffset = {x: offset.x + lastOffset.x, y: offset.y + lastOffset.y};
+    if (offset) {
+        lastOffset = {x: offset.x + lastOffset.x, y: offset.y + lastOffset.y};
+    }
     downAtPoint = undefined;
 }
 
@@ -48,6 +50,7 @@ const onScroll = function(event) {
     event.preventDefault();
     event.stopPropagation();
     console.log(event);
+    onZoonListener();
 }
 
 function setOnZoomListener(onZoom) {
