@@ -4,6 +4,7 @@
     import handlers from '../utils/handlers';
 
     export let points;
+    export let map;
 
     let canvas; 
     let renderer;
@@ -26,13 +27,13 @@
     }
 
     function onKeyDown(event) {
-        if (event.code == 'Escape') { 
+        if (event.code == 'Escape' || event.code == 'KeyQ') { 
             renderer.clearMark(); 
         }
     }
 
     function render() {
-        if (renderer && points) renderer.drawPoints(points);
+        if (renderer) renderer.draw(points, map);
         requestAnimationFrame(render)
     }
 

@@ -8,6 +8,7 @@ export class Renderer {
         this.#mark_img.src = 'src/assets/cancel.png';
         this.#img_load_promise = new Promise((resolve, reject) => {
             this.#mark_img.onload = (event) => {
+                // this.#ctx.drawImage(this.#mark_img, 10, 10);
                 console.log("Image loaded");
                 resolve();
             }
@@ -60,7 +61,7 @@ export class Renderer {
         //this.#ctx.viewport(0, 0, width, height);
     }
 
-    drawPoints(points) {
+    draw(points, map, cost_cloud) {
         //this.#ctx.bufferData(this.#ctx.ARRAY_BUFFER, new Float32Array(points), this.#ctx.STATIC_DRAW);
         //this.#ctx.drawArrays(this.#ctx.POINTS, 0, 2);
 
@@ -68,23 +69,45 @@ export class Renderer {
         // let data = this.#ctx.getImageData(0, 0, this.#width, this.#height);
 
         if (this.#mark) {
-            this.#ctx.drawImage(this.#mark_img, this.#mark.x, this.#mark.y, 50, 50);
+            this.#ctx.drawImage(this.#mark_img, this.#mark.x - 10, this.#mark.y - 10, 20, 20);
         }
         
-        points.forEach(element => {
-            if (element) {
-                let radius = element[0];
-                let angle = element[1];
-                this.#ctx.fillStyle = 'red';
-                this.#ctx.fillRect(radius * Math.cos(angle) + this.#width / 2, radius * Math.sin(angle) + this.#height / 2, 1.3, 1.3);
-            }
-        });
-        // this.#ctx.putImageData(data, this.#x, this.#y);
+        if (map) {
+            map.forEach((array, i) => {
+                array.forEach((data, j) => {
+                    switch (data) {
+                        case -1: 
+                            this.#ctx.fillStyle = '#44aa55';
+                            break;
+                        case 0:
+                            this.#ctx.fillStyle = '#99ffaa';
+                            break;
+                        case 1:
+                            this.#ctx.fillStyle = 'black';
+                    }
+                    // TODO: Scale to match point cloud
+                    this.#ctx.fillRect(j + this.#width / 2 - map[0].length / 2, i + this.#height / 2 - map.length / 2, 1, 1);
+                })
+            })
+        }
+        
+        if (points) {
+            points.forEach(element => {
+                if (element) {
+                    let radius = element[0];
+                    let angle = element[1];
+                    this.#ctx.fillStyle = 'red';
+                    this.#ctx.fillRect(radius * 30 * Math.cos(angle) + this.#width / 2, radius * 30 * Math.sin(angle) + this.#height / 2, 1.3, 1.3);
+                }
+            });
+        }
+
+       // this.#ctx.putImageData(data, this.#x, this.#y);
     }
 
     async markWithCross(x, y) {
         await this.#img_load_promise;
-        this.#mark = {x: x, y: y};
+        this.#mark = {x: x - this.#x, y: y - this.#y};
         console.log("Location marked at " + x + ", " + y);
     }
 
