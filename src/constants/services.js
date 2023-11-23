@@ -73,3 +73,8 @@ export const Services = Object.freeze({
     STOP_MOTOR: '/stop_motor',
     TOGGLE: '/toggle',
 });
+
+
+export const ServiceTypes = Object.freeze({
+
+});

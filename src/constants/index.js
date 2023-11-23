@@ -1,6 +1,5 @@
-import { Topics } from './topics';
-import { Services } from './services';
-import { MessageTypes } from './messages';
+import { Topics, MessageTypes } from './topics';
+import { Services, ServiceTypes } from './services';
 
 export {
     Topics,

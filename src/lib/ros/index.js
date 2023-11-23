@@ -1,10 +1,12 @@
 import {RosConnection} from './rosconn';
 
+let conn;
+
 export function subscribe(onPointData, onMapData, onCostData) {
     // IDEA: Service for finding the IP of the rover. 
     // Could be a server that uses auth to find registered Rovers and their recent known IP addresses.
     
-    const conn = new RosConnection("ws://192.168.7.253:9090", function() {
+    conn = new RosConnection("ws://192.168.7.253:9090", function() {
         console.log("Connected to rover successfully");
     });
   
@@ -35,3 +37,10 @@ export function subscribe(onPointData, onMapData, onCostData) {
     });
 }
 
+export function saveMap() {
+    conn.saveMap();
+}
+
+export function moveRover(mark) {
+    // TODO
+}
